@@ -44,6 +44,12 @@ export type Action =
         key: ''
     } | {
         type: 'RESET'
+    } | {
+        type: 'TOGGLE_MUTE'
+    } | {
+        type: 'TOGGLE_SHAKE'
+    } | {
+        type: 'CLEAR_SHAKE'
     }
 
 export type State = {
@@ -55,8 +61,10 @@ export type State = {
         {word: 'e', status: 0},
         ],
     finished : false,
-    count : 0
-
+    count : 0,
+    isMuted : false,
+    isShakeEnabled : true,
+    shaking : false
 }
 
 const initialState: State = {
@@ -70,7 +78,10 @@ const initialState: State = {
     //
     questions: generate(50),
     finished : false,
-    count : 0
+    count : 0,
+    isMuted : true,
+    isShakeEnabled : true,
+    shaking : false
 }
 export default (state: State = initialState, action: Action): State => {
     switch (action.type) {
@@ -91,7 +102,13 @@ export default (state: State = initialState, action: Action): State => {
                       }
                       break;
                   } else {
-                      audio.play()
+                      if (!next.isMuted) {
+                          audio.currentTime = 0;
+                          audio.play()
+                      }
+                      if (next.isShakeEnabled) {
+                          next.shaking = true;
+                      }
                   }
               }
           }
@@ -99,6 +116,12 @@ export default (state: State = initialState, action: Action): State => {
           next.count += 1;
 
             return next
+        case 'TOGGLE_MUTE':
+            return {...state, isMuted: !state.isMuted}
+        case 'TOGGLE_SHAKE':
+            return {...state, isShakeEnabled: !state.isShakeEnabled}
+        case 'CLEAR_SHAKE':
+            return {...state, shaking: false}
         case 'RESET':
             return initialState
         default:
