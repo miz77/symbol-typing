@@ -39,26 +39,59 @@ export default class Typing extends React.Component {
         }
     }
 
+    toggleMute() {
+        this.props.dispatch({type: "TOGGLE_MUTE"})
+    }
+
+    toggleShake() {
+        this.props.dispatch({type: "TOGGLE_SHAKE"})
+    }
+
+    handleAnimationEnd() {
+        this.props.dispatch({type: "CLEAR_SHAKE"})
+    }
+
     render() {
-        const {questions, finished, count} = this.props
+        const {questions, finished, count, isMuted, isShakeEnabled, shaking} = this.props
 
         let display = questions.map((item, index) => {
+            let className = styles.each_string + " " + this.statusToClassName(item.status)
+            if (shaking && item.status === 1) {
+                className += " " + styles.shake
+            }
             return <span
                 key={index}
-                className={styles.each_string + " " + this.statusToClassName(item.status)}
+                className={className}
+                onAnimationEnd={item.status === 1 ? this.handleAnimationEnd.bind(this) : undefined}
             >
                 {item.word}
             </span>
         })
 
         return <div className={styles.Typing}>
+            <div className={styles.controls}>
+                <button
+                    className={styles.toggle_btn + (isMuted ? " " + styles.toggle_off : "")}
+                    onClick={this.toggleMute.bind(this)}
+                    title={isMuted ? "サウンドON" : "ミュート"}
+                >
+                    {isMuted ? "🔇 Mute" : "🔊 Sound"}
+                </button>
+                <button
+                    className={styles.toggle_btn + (!isShakeEnabled ? " " + styles.toggle_off : "")}
+                    onClick={this.toggleShake.bind(this)}
+                    title={isShakeEnabled ? "振動OFF" : "振動ON"}
+                >
+                    {isShakeEnabled ? "📳 Shake" : "⏹ Shake"}
+                </button>
+            </div>
             <div className={styles.text}>
                 {display}
             </div>
             <input
                 type="text"
                 ref={(input) => { this.typeInput = input; }}
-                onKeyPress={this.keyPress.bind(this)}/>
+                onKeyDown={(e) => { if (e.key.length === 1) this.keyPress(e); }}/>
 
             {
                 (() => {

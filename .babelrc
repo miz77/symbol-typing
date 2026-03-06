@@ -1,41 +1,13 @@
 {
   "presets": [
-    "react",
-    ["env", { "targets": {
-      "Chrome": 56
-    }}]
-  ],
-  "plugins": [
-    "react-hot-loader/babel",
-    "dynamic-import-webpack",
-    "transform-decorators-legacy",
-    "transform-object-rest-spread",
-    ["transform-runtime", {
-      "polyfill": true,
-      "regenerator": true
+    "@babel/preset-react",
+    "@babel/preset-flow",
+    ["@babel/preset-env", {
+      "targets": "> 0.25%, not dead"
     }]
   ],
-  "env": {
-    "test": {
-      "presets": [
-        "react",
-        ["env", { "targets": {
-          "node": 6
-        }}]
-      ],
-      "plugins": [
-        ["flow-runtime", {"assert": true}],
-        "transform-async-to-generator"
-      ],
-    },
-    "production": {
-      "presets": [
-        "react",
-        "flow",
-        ["env", { "targets": {
-          "browsers": ["last 2 versions", "IE 11"]
-        }}]
-      ]
-    }
-  }
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "@babel/plugin-transform-object-rest-spread"
+  ]
 }

@@ -1,13 +1,9 @@
 /* @flow */
 import React from 'react'
 import { connect } from 'react-redux'
-import type { Dispatcher, Connector } from '../../types'
 import HomeContainer from '../home/HomeContainer'
-import type { State, Action } from './reducers'
 
-function AppContainer (
-  { location }: State & Dispatcher<Action>
-) {
+function AppContainer ({ location, dispatch }) {
   switch (location) {
     case 'home':
       return <HomeContainer/>
@@ -16,6 +12,4 @@ function AppContainer (
   }
 }
 
-const connector: Connector<{}, State, Action> = connect(({ app }) => app)
-
-export default connector(AppContainer)
+export default connect(({ app }) => app)(AppContainer)
