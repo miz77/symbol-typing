@@ -9,6 +9,7 @@ Learn to Typing Symbols
 https://corocn.github.io/symbol-typing/
 
 サンプル (本リポジトリ)
+https://miz77.github.io/symbol-typing/
 
 ## Development Info
 webpack, React, Redux
