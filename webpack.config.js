@@ -32,7 +32,11 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
+              modules: {
+                namedExport: false,
+                exportLocalsConvention: 'as-is',
+                localIdentName: '[hash:base64]'
+              },
               importLoaders: 1
             }
           },
