@@ -79,7 +79,7 @@ const initialState: State = {
     questions: generate(50),
     finished : false,
     count : 0,
-    isMuted : false,
+    isMuted : true,
     isShakeEnabled : true,
     shaking : false
 }
